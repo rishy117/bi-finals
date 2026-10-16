@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kristwin BI System</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='4' fill='%231f3864'/%3E%3Cpath d='M6 18h12M8 16v-5M12 16V7M16 16v-3' stroke='white' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+  <!-- Login -->
+  <div id="login" class="login" hidden>
+    <form id="loginForm" class="login-card" novalidate>
+      <div class="login-brand">
+        <div class="logo-box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19h14M8 16v-5M12 16V7M16 16v-3"/></svg></div>
+        <div>
+          <h1>Kristwin Consumer Goods Trading</h1>
+          <p>Business Intelligence System</p>
+        </div>
+      </div>
+      <label>Username<input name="username" autocomplete="username" required autofocus></label>
+      <label>Password<input name="password" type="password" autocomplete="current-password" required></label>
+      <div class="form-error" id="loginError"></div>
+      <button class="btn primary block" type="submit">Log in</button>
+      <p class="login-hint">Sample accounts: <b>admin</b> / admin123 · <b>staff</b> / staff123</p>
+    </form>
+  </div>
+
+  <!-- App -->
+  <div id="app" hidden>
+    <header class="topbar">
+      <div class="container topbar-inner">
+        <div class="brand">
+          <div class="logo-box"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19h14M8 16v-5M12 16V7M16 16v-3"/></svg></div>
+          <div>
+            <h1>Kristwin Consumer Goods Trading Business Intelligence Dashboard</h1>
+            <p>Sales, Inventory, and Procurement Monitoring</p>
+          </div>
+        </div>
+        <div class="topbar-meta">
+          <div id="bizLocation">Shortsite, Masipit, Calapan City</div>
+          <div class="period" id="periodLabel">Data Period: Jan–Dec 2025</div>
+        </div>
+      </div>
+    </header>
+
+    <nav class="nav">
+      <div class="container nav-inner">
+        <div class="tabs" id="tabs">
+          <a href="#/dashboard" data-route="dashboard">Dashboard</a>
+          <a href="#/sales" data-route="sales">Sales</a>
+          <a href="#/inventory" data-route="inventory">Inventory</a>
+          <a href="#/procurement" data-route="procurement">Procurement</a>
+          <a href="#/suppliers" data-route="suppliers">Suppliers</a>
+          <a href="#/users" data-route="users" data-admin>Users</a>
+        </div>
+        <div class="nav-right">
+          <div id="navTools" class="nav-tools"></div>
+          <div class="user-chip">
+            <span class="avatar" id="userInitial">A</span>
+            <span><b id="userName"></b><small id="userRole"></small></span>
+          </div>
+          <button class="btn ghost sm" id="logoutBtn">Log out</button>
+        </div>
+      </div>
+    </nav>
+
+    <main id="view"></main>
+  </div>
+
+  <div id="modal" class="modal" aria-hidden="true"></div>
+  <div id="toast" class="toast" role="status"></div>
+  <div id="tooltip" class="tooltip"></div>
+
+  <script src="assets/js/charts.js"></script>
+  <script src="assets/js/app.js"></script>
+</body>
+</html>
