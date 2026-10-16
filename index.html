@@ -23,6 +23,7 @@
       <div class="form-error" id="loginError"></div>
       <button class="btn primary block" type="submit">Log in</button>
       <p class="login-hint">Sample accounts: <b>admin</b> / admin123 · <b>staff</b> / staff123</p>
+      <p class="demo-note" id="demoNoteLogin" hidden>Browser demo mode: data is saved in this browser only.</p>
     </form>
   </div>
 
@@ -40,6 +41,7 @@
         <div class="topbar-meta">
           <div id="bizLocation">Shortsite, Masipit, Calapan City</div>
           <div class="period" id="periodLabel">Data Period: Jan–Dec 2025</div>
+          <div class="demo-note" id="demoNote" hidden>Browser demo · data saved in this browser · <button type="button" class="link-btn" id="demoReset">Reset sample data</button></div>
         </div>
       </div>
     </header>
@@ -72,6 +74,8 @@
   <div id="toast" class="toast" role="status"></div>
   <div id="tooltip" class="tooltip"></div>
 
+  <script src="assets/js/seed.js"></script>
+  <script src="assets/js/localapi.js"></script>
   <script src="assets/js/charts.js"></script>
   <script src="assets/js/app.js"></script>
 </body>

@@ -32,7 +32,17 @@
   const todayStr = () => { const d = new Date(); d.setMinutes(d.getMinutes() - d.getTimezoneOffset()); return d.toISOString().slice(0, 10); };
   const badge = (s) => `<span class="badge ${BADGE[s] || 'gray'}"><i></i>${esc(s)}</span>`;
 
-  async function api(path, { method = 'GET', body } = {}) {
+  // 'server' = api.php with MySQL (XAMPP). 'local' = browser-only mode (localapi.js), used automatically
+  // when PHP is not available: index.html opened directly, GitHub Pages, VS Code Live Server.
+  let mode = location.protocol === 'file:' || /\.github\.io$/.test(location.hostname) ? 'local' : null;
+
+  function useLocalMode() {
+    mode = 'local';
+    $('#demoNote').hidden = false;
+    $('#demoNoteLogin').hidden = false;
+  }
+
+  async function serverRequest(path, method, body) {
     let res;
     try {
       res = await fetch(`api.php${path}`, {
@@ -42,21 +52,29 @@
         body: body ? JSON.stringify(body) : undefined,
       });
     } catch {
-      throw new Error('Cannot reach the server. Start Apache and MySQL in XAMPP, then open http://localhost/kristwin/');
+      return null;
     }
     const data = await res.json().catch(() => null);
-    if (!data) {
-      // api.php was not executed by PHP: the page was opened with VS Code Live Server, file://, or a wrong folder.
-      if (res.status === 404 || res.status === 405 || location.port) {
-        throw new Error('PHP is not running for this page. Start Apache and MySQL in XAMPP, then open http://localhost/kristwin/ (VS Code Live Server cannot run PHP).');
-      }
-      throw new Error(`Server error (HTTP ${res.status}). Make sure Apache and MySQL are running in XAMPP.`);
+    // No JSON = api.php was not executed by PHP. 503 = PHP runs but MySQL is off or the database is missing.
+    if (!data || res.status === 503) return null;
+    return { status: res.status, data };
+  }
+
+  async function api(path, { method = 'GET', body } = {}) {
+    let res = mode === 'local' ? null : await serverRequest(path, method, body);
+    if (res) {
+      mode = 'server';
+    } else {
+      if (mode === 'server') throw new Error('Lost connection to the server. Make sure Apache and MySQL are still running in XAMPP.');
+      useLocalMode();
+      res = window.KristwinLocal.request(method, path, body);
     }
+    const data = res.data;
     if (res.status === 401 && path !== '/login' && path !== '/me') {
       signOutLocal();
       throw new Error('Your session has ended. Please log in again.');
     }
-    if (!res.ok) throw new Error(data.error || 'Request failed.');
+    if (res.status >= 400) throw new Error(data.error || 'Request failed.');
     return data;
   }
 
@@ -240,6 +258,13 @@
   $('#logoutBtn').onclick = async () => {
     try { await api('/logout', { method: 'POST' }); } catch { /* already signed out */ }
     signOutLocal();
+  };
+
+  $('#demoReset').onclick = async () => {
+    if (!(await confirmBox('Erase all changes made in this browser and restore the sample data?', { okLabel: 'Reset' }))) return;
+    window.KristwinLocal.reset();
+    toast('Sample data restored.');
+    route();
   };
 
   function enterApp(user) {

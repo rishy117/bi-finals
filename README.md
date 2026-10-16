@@ -5,7 +5,14 @@ based on the BI dashboard prototype in the BSIS 4-A project paper.
 
 **Stack:** HTML · CSS · JavaScript (frontend) · PHP 8 (backend API) · MySQL / MariaDB (database) — runs on XAMPP.
 
-## How to run (XAMPP)
+## Quick start (no installation)
+
+Double-click `index.html`, or open the GitHub Pages site. When PHP/MySQL is not available the
+app switches to **browser demo mode** automatically: it loads the same sample data
+(`assets/js/seed.js`) and runs the same rules in the browser (`assets/js/localapi.js`).
+Changes are saved in that browser only; use **Reset sample data** in the header to start over.
+
+## How to run (XAMPP, with MySQL)
 
 1. Put this folder inside `C:\xampp\htdocs\` and name it `kristwin`
    (on the development laptop this is already linked: `C:\xampp\htdocs\kristwin` → this folder).
@@ -68,6 +75,8 @@ index.html               Web interface (single page)
 assets/css/style.css     Styles
 assets/js/app.js         Pages, forms and tables
 assets/js/charts.js      Bar and donut charts (SVG, works offline)
+assets/js/localapi.js    Browser demo mode: same API as api.php, data kept in localStorage
+assets/js/seed.js        Sample data for demo mode (generated from database/kristwin_db.sql)
 api.php                  JSON API router  (e.g. api.php/products, api.php/dashboard?year=2025)
 config.php               Database connection settings
 install.php              One-click database setup / reset
